@@ -1,0 +1,51 @@
+stages:
+  - build
+  # - test
+  - deploy
+ 
+# Build Stage
+build-job:
+  stage: build
+  image: node:24.4.1
+  script:
+    - npm install
+    - npm run build
+    - mv dist public  # GitLab Pages expects a 'public/' folder
+  artifacts:
+    paths:
+      - public/
+    expire_in: 1 hour
+ 
+# Test Stage
+# test-job:
+#   stage: test
+#   image: node:24.4.1
+#   script:
+#     - npm install
+#     - npm run test
+#   artifacts:
+#     paths:
+#       - coverage/
+#       - test-results/
+#     when: always
+#     expire_in: 1 hour
+#   allow_failure: false
+#   only:
+#     - main
+ 
+# Deploy Stage (GitLab Pages)
+ 
+deploy-job:
+  stage: deploy
+  image: node:24.4.1
+  script:
+    - echo "Deploying to production..."
+  environment:
+    name: production
+    url: https://your-production-url.com
+  only:
+    - main
+ 
+ 
+ 
+ 
